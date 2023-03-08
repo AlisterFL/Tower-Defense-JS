@@ -53,9 +53,11 @@ function animate() {
     requestAnimationFrame(animate)
 
     context.drawImage(image, 0, 0)
-    enemies.forEach((enemy) => {
+
+    for (let i = enemies.length -1; i >= 0; i--) {
+        const enemy = enemies[i]
         enemy.update()
-    })
+    }
 
     placementTower.forEach(tower => {
         tower.update(mouse)
@@ -80,7 +82,18 @@ function animate() {
             const xDifference = projectile.enemy.center.x - projectile.position.x
             const yDifference = projectile.enemy.center.y - projectile.position.y
             const distance = Math.hypot(xDifference, yDifference)
+            
+            // Quand projectiles touche enemy
             if (distance < projectile.enemy.radius + projectile.radius) {
+                projectile.enemy.health -= 20
+                if(projectile.enemy.health <= 0) {
+                    const enemyIndex = enemies.findIndex((enemy) => {
+                        return projectile.enemy === enemy
+                    })
+
+                    if(enemyIndex > -1) enemies.splice(enemyIndex, 1)
+                }
+                console.log(projectile.enemy.health)
                 building.projectiles.splice(i, 1)
             }
         }

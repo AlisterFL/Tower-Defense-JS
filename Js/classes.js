@@ -36,6 +36,7 @@ class EnemySkeleton {  //création squelette
             y: this.position.y + this.height/2
         }
         this.radius = 50
+        this.health = 100
     }
 
     draw() {
@@ -44,6 +45,13 @@ class EnemySkeleton {  //création squelette
         context.beginPath()
         context.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2)
         context.fill()
+
+        //health bar
+        context.fillStyle = 'red'
+        context.fillRect(this.position.x, this.position.y - 15, this.width, 10)
+
+        context.fillStyle = 'green'
+        context.fillRect(this.position.x, this.position.y - 15, this.width * this.health / 100, 10)
     }
 
     update() {
