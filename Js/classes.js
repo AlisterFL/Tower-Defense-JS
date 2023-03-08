@@ -25,7 +25,7 @@ class PlacementTower {
 }
 
 
-class EnemySkeleton {  //création squelette
+class Enemy {  //création squelette
     constructor({position = {x: 0, y: 0 } }) {
         this.position = position
         this.width = 100

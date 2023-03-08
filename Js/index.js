@@ -37,17 +37,22 @@ image.src = 'Img/backgroundNormal1.png'
 
 
 const enemies = [] //Creation ennemies
-for (let i = 1; i < 3; i++) {
-    const xOffset = i * 150
-    enemies.push(
-        new EnemySkeleton({
-            position: { x: waypoints[0].x, y: waypoints[0].y - xOffset }
-        })
-    )
+
+function spawnEnemies(spawnCount) {
+    for (let i = 1; i < spawnCount + 1; i++) {
+        const xOffset = i * 150
+        enemies.push(
+            new Enemy({
+                position: { x: waypoints[0].x, y: waypoints[0].y - xOffset }
+            })
+        )
+    }
 }
 
 const buildings = []
 let activeTower = undefined
+let enemyCount = 3
+spawnEnemies(enemyCount)
 
 function animate() {
     requestAnimationFrame(animate)
@@ -85,6 +90,7 @@ function animate() {
             
             // Quand projectiles touche enemy
             if (distance < projectile.enemy.radius + projectile.radius) {
+                // vie & mort enemy
                 projectile.enemy.health -= 20
                 if(projectile.enemy.health <= 0) {
                     const enemyIndex = enemies.findIndex((enemy) => {
@@ -92,6 +98,12 @@ function animate() {
                     })
 
                     if(enemyIndex > -1) enemies.splice(enemyIndex, 1)
+                }
+
+                //tracker le nbr total d'enemies
+                if (enemies.length === 0)  {
+                    enemyCount += 2
+                    spawnEnemies(enemyCount)
                 }
                 console.log(projectile.enemy.health)
                 building.projectiles.splice(i, 1)
